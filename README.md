@@ -1,0 +1,2 @@
+# amandeepskaler.github.io
+MarketInsights
