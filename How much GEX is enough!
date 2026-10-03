@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A simple guide to understanding how much positive or negative GEX may be significant enough to matter in a trading decision.">
+  <meta name="author" content="Amandeep Skaler">
+  <meta property="og:title" content="How Much Positive or Negative GEX Is Enough to Make a Trade Decision?">
+  <meta property="og:description" content="A simple framework for understanding GEX strength using relative GEX, Gamma Flip, Call Wall, Put Wall and price action.">
+  <title>How Much Positive or Negative GEX Is Enough to Make a Trade Decision?</title>
+
+  <style>
+    :root {
+      --navy: #0b2545;
+      --blue: #123f6b;
+      --green: #159570;
+      --red: #e34b4b;
+      --gold: #f2bd3d;
+      --light: #f5f8fb;
+      --text: #243447;
+      --muted: #637587;
+      --card: #ffffff;
+      --border: #dfe7ee;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--light);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #071d36, #123f6b);
+      color: white;
+      padding: 70px 20px 60px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 0 20px;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--gold);
+      color: #17212b;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      letter-spacing: .04em;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 6vw, 4rem);
+      line-height: 1.12;
+      margin: 0 0 20px;
+      max-width: 850px;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      max-width: 720px;
+      color: #dbe8f3;
+    }
+
+    article {
+      background: var(--card);
+      margin: -30px auto 50px;
+      padding: 45px;
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(10, 40, 70, .08);
+      position: relative;
+    }
+
+    h2 {
+      color: var(--navy);
+      font-size: 1.65rem;
+      margin-top: 42px;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      color: var(--navy);
+      margin-top: 28px;
+    }
+
+    p { margin: 0 0 18px; }
+
+    .question {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy);
+      border-left: 5px solid var(--gold);
+      padding-left: 16px;
+      margin: 25px 0;
+    }
+
+    .formula {
+      background: #eef5fa;
+      border: 1px solid #d7e5ef;
+      padding: 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-align: center;
+      margin: 20px 0;
+      color: var(--blue);
+    }
+
+    .example {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 22px;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin: 25px 0;
+    }
+
+    .card {
+      padding: 22px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: white;
+    }
+
+    .card.positive {
+      border-top: 6px solid var(--green);
+    }
+
+    .card.negative {
+      border-top: 6px solid var(--red);
+    }
+
+    .card h3 { margin-top: 0; }
+
+    .green { color: var(--green); font-weight: 700; }
+    .red { color: var(--red); font-weight: 700; }
+
+    .levels {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 22px 0 30px;
+      font-size: .98rem;
+    }
+
+    .levels th,
+    .levels td {
+      border: 1px solid var(--border);
+      padding: 13px;
+      text-align: left;
+    }
+
+    .levels th {
+      background: var(--navy);
+      color: white;
+    }
+
+    .levels tr:nth-child(even) {
+      background: #f7fafc;
+    }
+
+    .warning {
+      background: #fff7df;
+      border-left: 5px solid var(--gold);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 25px 0;
+    }
+
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+    }
+
+    .steps li {
+      counter-increment: step;
+      margin: 15px 0;
+      padding: 16px 18px 16px 55px;
+      background: #f7fafc;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 16px;
+      top: 13px;
+      width: 28px;
+      height: 28px;
+      background: var(--blue);
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-weight: 700;
+    }
+
+    .takeaway {
+      background: linear-gradient(135deg, #0b2545, #123f6b);
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin-top: 35px;
+    }
+
+    .takeaway h2 { color: white; margin-top: 0; }
+
+    .disclaimer {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-top: 35px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .back {
+      display: inline-block;
+      margin-top: 28px;
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px 45px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    @media (max-width: 700px) {
+      article { padding: 28px 22px; margin-top: -20px; }
+      .grid { grid-template-columns: 1fr; }
+      .levels { font-size: .88rem; }
+      .levels th, .levels td { padding: 10px 8px; }
+      .hero { padding-top: 48px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="container">
+    <span class="tag">GEX • OPTIONS • MARKET STRUCTURE</span>
+    <h1>How Much Positive or Negative GEX Is Enough to Make a Trade Decision?</h1>
+    <p class="subtitle">
+      A simple framework for understanding GEX strength and combining it with Gamma Flip,
+      Call Wall, Put Wall and price action.
+    </p>
+  </div>
+</header>
+
+<main class="container">
+<article>
+
+  <p class="question">
+    You understand the basic idea of Gamma Exposure (GEX). Positive GEX can act like a brake.
+    Negative GEX can act like an accelerator. But how much GEX is actually enough to matter?
+  </p>
+
+  <p>
+    Is +₹5,000 crore enough? Is -₹20,000 crore enough?
+  </p>
+
+  <p>
+    The answer is simple: <strong>there is no single GEX number that works for every market or every day.</strong>
+  </p>
+
+  <p>
+    The same GEX value can be small on one day and very large on another.
+    So instead of looking only at the absolute GEX number, we should look at
+    <strong>GEX relative to its normal level.</strong>
+  </p>
+
+  <h2>Think in Terms of GEX Strength</h2>
+
+  <p>
+    Suppose the normal GEX for NIFTY is around ₹20,000 crore.
+  </p>
+
+  <p>
+    If today's GEX is <strong>+₹5,000 crore</strong>, it may not be very significant.
+    But if today's GEX is <strong>+₹40,000 crore</strong>, the market is showing a much stronger
+    positive-GEX environment.
+  </p>
+
+  <p>
+    The same principle applies to negative GEX.
+    This is why <strong>relative GEX can be more useful than the absolute number.</strong>
+  </p>
+
+  <h2>A Simple Way to Measure It</h2>
+
+  <p>
+    One simple approach is to compare today's GEX with the <strong>20-day median absolute GEX</strong>.
+  </p>
+
+  <div class="formula">
+    GEX Ratio = Current GEX ÷ 20-day Median Absolute GEX
+  </div>
+
+  <div class="example">
+    <strong>Example:</strong><br><br>
+    20-day median absolute GEX = ₹25,000 crore<br>
+    Today's GEX = -₹37,500 crore<br><br>
+    <strong>GEX Ratio = -1.5</strong><br><br>
+    This means today's negative GEX is approximately 1.5 times the normal magnitude.
+  </div>
+
+  <p>
+    That is much more informative than simply saying:
+    <strong>"GEX is -₹37,500 crore."</strong>
+  </p>
+
+  <h2>A Simple GEX Strength Guide</h2>
+
+  <table class="levels">
+    <thead>
+      <tr>
+        <th>GEX Ratio</th>
+        <th>Strength</th>
+        <th>Basic Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>0 to ±0.5</td>
+        <td>Weak</td>
+        <td>Probably not strong enough to influence a trade decision by itself.</td>
+      </tr>
+      <tr>
+        <td>±0.5 to ±1.0</td>
+        <td>Moderate</td>
+        <td>Useful when supported by price action and other levels.</td>
+      </tr>
+      <tr>
+        <td>&gt; +1.0</td>
+        <td class="green">Strong Positive</td>
+        <td>Potentially more stabilising or mean-reverting environment.</td>
+      </tr>
+      <tr>
+        <td>&lt; -1.0</td>
+        <td class="red">Strong Negative</td>
+        <td>Potentially more volatility-amplifying environment.</td>
+      </tr>
+      <tr>
+        <td>Beyond ±1.5</td>
+        <td><strong>Very Strong</strong></td>
+        <td>Unusually large GEX compared with its recent normal level.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="warning">
+    <strong>Important:</strong> These are practical reference levels, not universal or guaranteed
+    trading thresholds. They should be tested against your own market, data source and strategy.
+  </div>
+
+  <h2>But Don't Trade GEX Alone</h2>
+
+  <p>
+    This is probably the most important point.
+  </p>
+
+  <p>
+    <strong>GEX is not a buy or sell signal.</strong>
+  </p>
+
+  <p>
+    Strong negative GEX does not automatically mean "SELL", and strong positive GEX
+    does not automatically mean "BUY".
+  </p>
+
+  <p>
+    GEX tells us something about the <strong>market environment</strong>.
+    We still need to look at price.
+  </p>
+
+  <h2>Add the Gamma Flip</h2>
+
+  <p>
+    The <strong>Gamma Flip</strong> is an important level where the overall gamma environment
+    changes from positive to negative or vice versa.
+  </p>
+
+  <div class="grid">
+    <div class="card positive">
+      <h3 class="green">Strong Positive GEX</h3>
+      <p>
+        If price is above the Gamma Flip, the environment may be more stable,
+        with greater potential for contained or mean-reverting price action.
+      </p>
+    </div>
+
+    <div class="card negative">
+      <h3 class="red">Strong Negative GEX</h3>
+      <p>
+        If price is below the Gamma Flip, the environment may be more aggressive,
+        with greater potential for expanding volatility.
+      </p>
+    </div>
+  </div>
+
+  <p>
+    The combination is more useful than GEX alone.
+  </p>
+
+  <h2>Add the Call Wall and Put Wall</h2>
+
+  <p>
+    Now we can make the analysis even more interesting.
+  </p>
+
+  <p>
+    Suppose NIFTY has <strong>strong negative GEX</strong> and price breaks below the
+    <strong>Put Wall</strong>. That can be a much stronger indication of a potential
+    expanding move than negative GEX alone.
+  </p>
+
+  <p>
+    Similarly, <strong>strong positive GEX</strong> with price repeatedly rejecting near the
+    <strong>Call Wall</strong> can support the idea of a more range-bound environment.
+  </p>
+
+  <h2>Think of GEX as the Weather</h2>
+
+  <p>
+    Imagine checking the weather before going outside.
+  </p>
+
+  <p>
+    You don't ask only, "Will it rain?" You also look at temperature, wind, clouds and
+    rain probability.
+  </p>
+
+  <p>
+    GEX is similar. It gives you information about the <strong>market environment</strong>.
+  </p>
+
+  <p>
+    You can then combine it with:
+  </p>
+
+  <p>
+    <strong>GEX + Gamma Flip + Call Wall + Put Wall + Price Action</strong>
+  </p>
+
+  <p>
+    to build a more complete picture.
+  </p>
+
+  <h2>A Simple Trading Framework</h2>
+
+  <ol class="steps">
+    <li>
+      <strong>How strong is GEX?</strong><br>
+      Is the GEX Ratio below -1, above +1, or somewhere in between?
+    </li>
+    <li>
+      <strong>Where is price relative to Gamma Flip?</strong><br>
+      Is price above it or below it?
+    </li>
+    <li>
+      <strong>Where is price relative to the Call and Put Walls?</strong><br>
+      Is price trapped between them, or is it breaking outside the range?
+    </li>
+    <li>
+      <strong>What is price actually doing?</strong><br>
+      Is there a breakout, rejection, failed breakout, or simply sideways movement?
+    </li>
+  </ol>
+
+  <h2>The Big Idea</h2>
+
+  <p>
+    The goal is not to find a magical GEX number.
+  </p>
+
+  <p>
+    <strong>There isn't one.</strong>
+  </p>
+
+  <p>
+    The goal is to identify when GEX is <strong>unusually strong compared with its own
+    normal behaviour.</strong>
+  </p>
+
+  <div class="grid">
+    <div class="card positive">
+      <h3 class="green">GEX Ratio &gt; +1.0</h3>
+      <p>Strong positive-GEX environment.</p>
+    </div>
+
+    <div class="card negative">
+      <h3 class="red">GEX Ratio &lt; -1.0</h3>
+      <p>Strong negative-GEX environment.</p>
+    </div>
+  </div>
+
+  <p>
+    A GEX Ratio beyond <strong>±1.5</strong> can be considered a very strong reading relative
+    to recent conditions. But these should be treated as <strong>reference levels, not
+    guaranteed trading signals.</strong>
+  </p>
+
+  <div class="takeaway">
+    <h2>Final Thought</h2>
+
+    <p>
+      Don't ask:
+      <strong>"Is GEX positive or negative?"</strong>
+    </p>
+
+    <p>
+      Ask:
+      <strong>"How strong is the GEX compared with normal, and does price action confirm the message?"</strong>
+    </p>
+
+    <p>
+      That small change in thinking can make GEX much more useful.
+    </p>
+
+    <p>
+      <strong>GEX tells you about the environment.</strong><br>
+      <strong>Price tells you what the market is actually doing.</strong>
+    </p>
+
+    <p>
+      The combination of the two can give you a clearer way to read market structure.
+    </p>
+  </div>
+
+  <p class="disclaimer">
+    <strong>Disclaimer:</strong> This article is for educational purposes only and is not
+    investment advice. GEX values depend on the data source, methodology and assumptions
+    used to calculate them. Always test thresholds against your own data and trading strategy.
+  </p>
+
+  <a class="back" href="index.html">← Back to the blog</a>
+
+</article>
+</main>
+
+<footer>
+  © 2026 Amandeep Kaler · GEX • Options • Market Structure • Quant Trading
+</footer>
+
+</body>
+</html>
