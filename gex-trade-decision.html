@@ -556,6 +556,529 @@
 </article>
 </main>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Subscribe | MarketInsights</title>
+
+    <meta name="description"
+          content="Subscribe to MarketInsights for new articles on options, GEX, market structure and quantitative trading.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 15px;
+
+            font-family: -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Roboto, Arial, sans-serif;
+
+            background: #f5f7fa;
+            color: #20262e;
+        }
+
+        .subscribe-box {
+            width: 100%;
+            max-width: 560px;
+
+            background: #ffffff;
+
+            border-radius: 16px;
+
+            padding: 42px 38px;
+
+            box-shadow: 0 10px 40px rgba(20, 35, 55, 0.08);
+
+            border: 1px solid #e6e9ed;
+        }
+
+        .logo {
+            text-align: center;
+
+            font-size: 22px;
+            font-weight: 800;
+
+            color: #0b1220;
+
+            margin-bottom: 28px;
+        }
+
+        .logo span {
+            color: #4f9cff;
+        }
+
+        .icon {
+            width: 52px;
+            height: 52px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 50%;
+
+            background: #f0f6ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 23px;
+        }
+
+        h1 {
+            text-align: center;
+
+            color: #111827;
+
+            font-size: 28px;
+
+            margin: 0 0 12px;
+
+            line-height: 1.25;
+        }
+
+        .intro {
+            text-align: center;
+
+            color: #5d6673;
+
+            font-size: 16px;
+
+            line-height: 1.65;
+
+            margin: 0 auto 28px;
+
+            max-width: 450px;
+        }
+
+        label {
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #374151;
+
+            margin-bottom: 7px;
+        }
+
+        input[type="email"] {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border: 1px solid #ccd3dc;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: border-color 0.2s,
+                        box-shadow 0.2s;
+
+            font-family: inherit;
+        }
+
+        input[type="email"]:focus {
+            border-color: #4f9cff;
+
+            box-shadow: 0 0 0 3px rgba(79, 156, 255, 0.12);
+        }
+
+        .consent {
+            display: flex;
+
+            gap: 9px;
+
+            align-items: flex-start;
+
+            margin: 17px 0 20px;
+
+            color: #68717e;
+
+            font-size: 12px;
+
+            line-height: 1.55;
+        }
+
+        .consent input {
+            margin-top: 3px;
+
+            flex-shrink: 0;
+        }
+
+        .consent a {
+            color: #397bc9;
+
+            text-decoration: none;
+        }
+
+        .consent a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+
+            border: 0;
+
+            border-radius: 8px;
+
+            background: #0b1220;
+
+            color: #ffffff;
+
+            padding: 14px 18px;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: background 0.2s,
+                        transform 0.1s;
+        }
+
+        button:hover {
+            background: #172b4d;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:disabled {
+            opacity: 0.65;
+
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 13px 15px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        .message.success {
+            display: block;
+
+            background: #edf8f1;
+
+            border: 1px solid #c8ead4;
+
+            color: #16733a;
+        }
+
+        .message.error {
+            display: block;
+
+            background: #fff1f1;
+
+            border: 1px solid #f0cccc;
+
+            color: #b42318;
+        }
+
+        .privacy {
+            text-align: center;
+
+            color: #89919b;
+
+            font-size: 11px;
+
+            margin-top: 20px;
+
+            line-height: 1.5;
+        }
+
+        .back {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #397bc9;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .subscribe-box {
+                padding: 32px 23px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .intro {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="subscribe-box">
+
+    <div class="logo">
+        Market<span>Insights</span>
+    </div>
+
+    <div class="icon">
+        📩
+    </div>
+
+    <h1>Get Market Insights by Email</h1>
+
+    <p class="intro">
+        Subscribe to receive new articles on GEX, options,
+        market structure and quantitative trading directly
+        in your inbox.
+    </p>
+
+    <form id="subscribeForm">
+
+        <label for="email">
+            Email address
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+        >
+
+        <div class="consent">
+
+            <input
+                type="checkbox"
+                id="consent"
+                required
+            >
+
+            <label for="consent">
+                I agree to receive MarketInsights articles and
+                updates by email. I understand that I can
+                unsubscribe at any time.
+            </label>
+
+        </div>
+
+        <button
+            type="submit"
+            id="subscribeButton">
+            SUBSCRIBE
+        </button>
+
+    </form>
+
+    <div
+        id="message"
+        class="message">
+    </div>
+
+    <p class="privacy">
+        Your email address will only be used for
+        MarketInsights subscriptions. No advertising or
+        third-party promotional emails.
+    </p>
+
+    <a
+        href="index.html"
+        class="back">
+        ← Back to MarketInsights
+    </a>
+
+</div>
+
+<script>
+    /*
+     * IMPORTANT:
+     * Replace the URL below with your Google Apps Script
+     * Web App URL after completing the setup.
+     */
+
+    const SCRIPT_URL =
+        "PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+
+
+    const form =
+        document.getElementById("subscribeForm");
+
+    const email =
+        document.getElementById("email");
+
+    const consent =
+        document.getElementById("consent");
+
+    const button =
+        document.getElementById("subscribeButton");
+
+    const message =
+        document.getElementById("message");
+
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+    }
+
+
+    form.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        message.className = "message";
+
+        const emailValue =
+            email.value.trim();
+
+        if (!emailValue ||
+            !emailValue.includes("@")) {
+
+            showMessage(
+                "Please enter a valid email address.",
+                "error"
+            );
+
+            return;
+        }
+
+        if (!consent.checked) {
+
+            showMessage(
+                "Please confirm that you want to receive MarketInsights emails.",
+                "error"
+            );
+
+            return;
+        }
+
+        if (
+            SCRIPT_URL.includes("PASTE_YOUR")
+        ) {
+
+            showMessage(
+                "The subscription system has not been connected yet.",
+                "error"
+            );
+
+            return;
+        }
+
+        button.disabled = true;
+
+        button.textContent =
+            "SUBSCRIBING...";
+
+
+        try {
+
+            const response =
+                await fetch(SCRIPT_URL, {
+
+                    method: "POST",
+
+                    mode: "cors",
+
+                    headers: {
+                        "Content-Type":
+                            "text/plain;charset=utf-8"
+                    },
+
+                    body: JSON.stringify({
+                        email: emailValue
+                    })
+
+                });
+
+
+            const result =
+                await response.json();
+
+
+            if (result.status === "success") {
+
+                form.reset();
+
+                showMessage(
+                    "You're subscribed! Please check your inbox for the confirmation email.",
+                    "success"
+                );
+
+            } else {
+
+                showMessage(
+                    result.message ||
+                    "Unable to complete the subscription. Please try again.",
+                    "error"
+                );
+            }
+
+        } catch (error) {
+
+            showMessage(
+                "Something went wrong. Please try again in a moment.",
+                "error"
+            );
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "SUBSCRIBE";
+        }
+
+    });
+</script>
+
+</body>
+</html>
+
 <footer>
   © 2026 MarketInsights · GEX • Options • Market Structure • Quant Trading
 </footer>
